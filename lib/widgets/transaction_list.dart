@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import '../model/transaction.dart';
 import 'package:intl/intl.dart';
-import './user_transactions.dart';
 
-class TransactionList extends StatelessWidget {
+class TransactionList extends StatefulWidget {
   final List<Transaction> transactions;
 
   TransactionList(this.transactions);
+
+  @override
+  State<TransactionList> createState() => _TransactionListState();
+}
+
+class _TransactionListState extends State<TransactionList> {
+  void RemoveTransaction(int index) {
+    setState(() {
+      widget.transactions.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,48 +27,64 @@ class TransactionList extends StatelessWidget {
       child: ListView.builder(
         itemBuilder: (ctx, index) {
           return Card(
-              child: Row(
-            children: [
-              Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 15,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Row(
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            color: Colors.purple,
+                            width: 2,
+                          )),
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            '\$${widget.transactions[index].amount}', //this is called string interpolation, \ means escaping
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.lightGreen,
+                            ),
+                          )),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.transactions[index].title,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            DateFormat.yMMMEd()
+                                .format(widget.transactions[index].date),
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                    color: Colors.purple,
-                    width: 2,
-                  )),
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    '\$${transactions[index].amount}', //this is called string interpolation, \ means escaping
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.lightGreen,
-                    ),
-                  )),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    transactions[index].title,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    DateFormat.yMMMEd().format(transactions[index].date),
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                ],
-              )
-            ],
-          ));
+                ),
+                TextButton(
+                  onPressed: (() => RemoveTransaction(index)),
+                  child: Icon(Icons.remove),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      foregroundColor: MaterialStateProperty.all(Colors.black)),
+                )
+              ],
+            ),
+          );
         },
-        itemCount: transactions.length,
+        itemCount: widget.transactions.length,
       ),
     );
   }
