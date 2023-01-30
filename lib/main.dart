@@ -3,7 +3,6 @@ import 'package:expense_app/widgets/new_transaction_.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
 import './model/transaction.dart';
-import './widgets/chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -65,7 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
   //   ),
   // ];
 
-  final List<Transaction> _userTransaction = [];
+  final List<Transaction> _userTransaction = [
+    Transaction(
+        id: 'id', title: 'AIR JORDAN', amount: 479.56, date: DateTime.now())
+  ];
 
   List<Transaction> get _recentTransaction {
     return _userTransaction.where((element) {
@@ -86,15 +88,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // late String titleInput;
+  //* late String titleInput;
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
           return GestureDetector(
-            child: NewTransaction(_addNewTransaction),
             onTap: (() {}),
             behavior: HitTestBehavior.translucent,
+            child: NewTransaction(_addNewTransaction),
           );
         });
   }

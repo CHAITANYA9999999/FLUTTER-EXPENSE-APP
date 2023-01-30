@@ -20,8 +20,8 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    //this widget.add has been added by automatically when we converted
-    //it from stateles to stateful widget
+    //*this widget.add has been added by automatically when we converted
+    //*it from stateles to stateful widget
     widget.addTx(enteredTitle, enteredAmount);
 
     Navigator.of(context).pop(); //the modal bottom sheet will

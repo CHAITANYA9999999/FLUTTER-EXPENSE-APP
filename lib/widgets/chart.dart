@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/transaction.dart';
 import 'package:intl/intl.dart';
+import './chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransacition;
@@ -25,6 +26,22 @@ class Chart extends StatelessWidget {
     });
   }
 
+  // double get fraction {
+  //   var sum = 0.00;
+  //   for (var i = 0; i < recentTransacition.length; i++) {
+  //     sum += recentTransacition[i].amount;
+  //   }
+  //   print(sum);
+  //   return sum;
+  // }
+
+  double get maxSpending {
+    return groupedTransactionValue.fold(0.0, (sum, item) {
+      return sum + (item['amount'] as double);
+    });
+  }
+
+  List<String> s = ['df', 'sdf'];
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,7 +49,18 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(20),
       child: Column(
         children: groupedTransactionValue.map((data) {
-          return Text('${data['day']}: ${data['amount']}');
+          return ChartBar(
+            label: data['day'].toString(),
+            spendingAmount: double.parse(data['amount'].toString()),
+
+            spendingPercentageOfTotal: maxSpending == 0.0
+                ? data['amount'] as double
+                : ((data['amount'] as double) / maxSpending),
+
+            // spendingPercentageOfTotal: fraction.toInt() != 0
+            //      (double.parse(data['amount'].toString()) / fraction)
+            //     : 0
+          );
         }).toList(),
       ),
     );
