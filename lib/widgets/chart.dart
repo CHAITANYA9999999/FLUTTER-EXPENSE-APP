@@ -11,12 +11,12 @@ class Chart extends StatelessWidget {
     return List.generate(7, (index) {
       final weekDay = DateTime.now().subtract(Duration(days: index));
 
-      double totalSum = 0;
+      double totalSum = 0.0;
       for (var i = 0; i < recentTransacition.length; i++) {
         if (recentTransacition[i].date.day == weekDay.day &&
-            recentTransacition[i].date.month == weekDay.year &&
-            recentTransacition[i].date.day == weekDay.year) {
-          totalSum += recentTransacition[i].amount;
+            recentTransacition[i].date.month == weekDay.month &&
+            recentTransacition[i].date.year == weekDay.year) {
+          totalSum += recentTransacition[i].amount as double;
         }
       }
       return {
@@ -51,10 +51,9 @@ class Chart extends StatelessWidget {
         children: groupedTransactionValue.map((data) {
           return ChartBar(
             label: data['day'].toString(),
-            spendingAmount: double.parse(data['amount'].toString()),
-
+            spendingAmount: data['amount'] as double,
             spendingPercentageOfTotal: maxSpending == 0.0
-                ? data['amount'] as double
+                ? 0
                 : ((data['amount'] as double) / maxSpending),
 
             // spendingPercentageOfTotal: fraction.toInt() != 0

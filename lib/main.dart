@@ -66,7 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Transaction> _userTransaction = [
     Transaction(
-        id: 'id', title: 'AIR JORDAN', amount: 479.56, date: DateTime.now())
+        id: 'id',
+        title: 'AIR JORDAN',
+        amount: 479.56,
+        date: DateTime.now().subtract(Duration(days: 5)))
   ];
 
   List<Transaction> get _recentTransaction {
@@ -122,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Chart(_recentTransaction),
-          TransactionList(_userTransaction),
+          TransactionList(_recentTransaction),
         ],
       ),
       // floatingActionButtonLocation:
