@@ -1,14 +1,16 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import './user_transactions.dart';
 
-class NewTransaction extends StatelessWidget {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
-
+class NewTransaction extends StatefulWidget {
   Function addTx;
   NewTransaction(this.addTx);
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   void submitData() {
     final enteredTitle = titleController.text;
@@ -17,7 +19,13 @@ class NewTransaction extends StatelessWidget {
     if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
     }
-    addTx(titleController.text, double.parse(amountController.text));
+
+    //*this widget.add has been added by automatically when we converted
+    //*it from stateles to stateful widget
+    widget.addTx(enteredTitle, enteredAmount);
+
+    Navigator.of(context).pop(); //the modal bottom sheet will
+    //automatically close when you press add transaction
   }
 
   @override
