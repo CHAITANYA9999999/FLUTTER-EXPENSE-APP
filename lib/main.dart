@@ -1,3 +1,4 @@
+//*PIXEL 3a
 import 'package:expense_app/widgets/chart.dart';
 import 'package:expense_app/widgets/new_transaction_.dart';
 import 'package:expense_app/widgets/transaction_list.dart';
@@ -16,12 +17,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.cyan,
           accentColor: Colors.amber,
           textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+              headline6: TextStyle(
+                fontFamily: 'Open Sans',
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
+              button:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
               fontFamily: 'Open Sans',
@@ -78,11 +80,11 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount, DateTime txDate) {
     final newTx = Transaction(
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: txDate,
       id: DateTime.now().toString(),
     );
 
@@ -102,6 +104,14 @@ class _MyHomePageState extends State<MyHomePage> {
             child: NewTransaction(_addNewTransaction),
           );
         });
+  }
+
+  void _deleteTransaction(String txId) {
+    setState(() {
+      _userTransaction.removeWhere(((element) {
+        return (element.id == txId);
+      }));
+    });
   }
 
   @override
@@ -125,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Chart(_recentTransaction),
-          TransactionList(_recentTransaction),
+          TransactionList(_recentTransaction, _deleteTransaction),
         ],
       ),
       // floatingActionButtonLocation:

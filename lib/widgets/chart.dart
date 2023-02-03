@@ -16,7 +16,7 @@ class Chart extends StatelessWidget {
         if (recentTransacition[i].date.day == weekDay.day &&
             recentTransacition[i].date.month == weekDay.month &&
             recentTransacition[i].date.year == weekDay.year) {
-          totalSum += recentTransacition[i].amount as double;
+          totalSum += recentTransacition[i].amount;
         }
       }
       return {
@@ -44,24 +44,30 @@ class Chart extends StatelessWidget {
   List<String> s = ['df', 'sdf'];
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Column(
-        children: groupedTransactionValue.map((data) {
-          return ChartBar(
-            label: data['day'].toString(),
-            spendingAmount: data['amount'] as double,
-            spendingPercentageOfTotal: maxSpending == 0.0
-                ? 0
-                : ((data['amount'] as double) / maxSpending),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.38,
+      child: Card(
+        elevation: 6,
+        margin: EdgeInsets.all(20),
+        child: Column(
+          children: groupedTransactionValue.map((data) {
+            return ChartBar(
+              label: data['day'].toString(),
+              spendingAmount: data['amount'] as double,
+              spendingPercentageOfTotal: maxSpending == 0.0
+                  ? 0
+                  : ((data['amount'] as double) / maxSpending),
 
-            // spendingPercentageOfTotal: fraction.toInt() != 0
-            //      (double.parse(data['amount'].toString()) / fraction)
-            //     : 0
-          );
-        }).toList(),
+              // spendingPercentageOfTotal: fraction.toInt() != 0
+              //      (double.parse(data['amount'].toString()) / fraction)
+              //     : 0
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 }
+
+
+//to reverse the order of the list is

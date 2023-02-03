@@ -2,29 +2,26 @@ import 'package:flutter/material.dart';
 import '../model/transaction.dart';
 import 'package:intl/intl.dart';
 
-class TransactionList extends StatefulWidget {
+class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  Function deleteTx;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTx);
 
-  @override
-  State<TransactionList> createState() => _TransactionListState();
-}
-
-class _TransactionListState extends State<TransactionList> {
-  void RemoveTransaction(int index) {
-    setState(() {
-      widget.transactions.removeAt(index);
-    });
-  }
+  //Coded it by myself
+  // void RemoveTransaction(int index) {
+  //   setState(() {
+  //     widget.transactions.removeAt(index);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.5,
       //Since ListView is scrollable, it takes infinite height, so therefore we cannot
       //use it without container, we have to give it a height
-      child: (this.widget.transactions.isEmpty)
+      child: (transactions.isEmpty)
           ? Column(
               children: [
                 Text(
@@ -49,12 +46,43 @@ class _TransactionListState extends State<TransactionList> {
             )
           : ListView.builder(
               itemBuilder: (ctx, index) {
-                return ListTile(
-                  leading: CircleAvatar(
-                      radius: 30,
-                      child: FittedBox(
-                          child:
-                              Text('\$${widget.transactions[index].amount}'))),
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                        radius: 30,
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: FittedBox(
+                              child: Text(
+                            '\$${transactions[index].amount}',
+                          )),
+                        )),
+                    title: Text(
+                      transactions[index].title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    subtitle: Text(
+                      DateFormat.yMMMMd().format(transactions[index].date),
+                    ),
+                    trailing: IconButton(
+                      //I coded it by myself
+                      // onPressed: (() => RemoveTransaction(index)),
+
+                      onPressed: () => deleteTx(transactions[index].id),
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+
+                      //!THIS WAS NOT NECESSARY
+                      // style: ButtonStyle(
+                      //     backgroundColor:
+                      //         MaterialStateProperty.all(Colors.white),
+                      //     foregroundColor:
+                      //         MaterialStateProperty.all(Colors.black)),
+                    ),
+                  ),
                 );
                 // return Card(
                 //   child: Row(
@@ -115,7 +143,7 @@ class _TransactionListState extends State<TransactionList> {
                 //   ),
                 // );
               },
-              itemCount: widget.transactions.length,
+              itemCount: transactions.length,
             ),
     );
   }
