@@ -5,7 +5,7 @@ import './chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransacition;
-  Chart(this.recentTransacition);
+  const Chart(this.recentTransacition);
 
   List<Map<String, Object>> get groupedTransactionValue {
     return List.generate(7, (index) {
@@ -16,7 +16,7 @@ class Chart extends StatelessWidget {
         if (recentTransacition[i].date.day == weekDay.day &&
             recentTransacition[i].date.month == weekDay.month &&
             recentTransacition[i].date.year == weekDay.year) {
-          totalSum += recentTransacition[i].amount as double;
+          totalSum += recentTransacition[i].amount;
         }
       }
       return {
@@ -41,14 +41,14 @@ class Chart extends StatelessWidget {
     });
   }
 
-  List<String> s = ['df', 'sdf'];
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Column(
-        children: groupedTransactionValue.map((data) {
+      margin: const EdgeInsets.all(20),
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        ...groupedTransactionValue.map((data) {
           return ChartBar(
             label: data['day'].toString(),
             spendingAmount: data['amount'] as double,
@@ -61,7 +61,10 @@ class Chart extends StatelessWidget {
             //     : 0
           );
         }).toList(),
-      ),
+      ]),
     );
   }
 }
+
+
+//to reverse the order of the list is
